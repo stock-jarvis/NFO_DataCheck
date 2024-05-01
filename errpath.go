@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	input_path := "/home/ajeeb/sandbox/src/ErrorFiles/APR_2021/GFDLNFO_TICK_01042021" //os.Args[1]
+	input_path := os.Args[1]
 	CheckPath(input_path)
 }
 
