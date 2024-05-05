@@ -10,11 +10,6 @@ import (
 	"sync"
 )
 
-func main() {
-	input_path := os.Args[1]
-	CheckPath(input_path)
-}
-
 func CheckPath(inPath string) {
 	var wg sync.WaitGroup
 	input_path := inPath
