@@ -76,13 +76,13 @@ func CheckErr(inPath string) {
 				for i := 1; i < len(contents[j]); i++ {
 					switch i {
 					case 1:
-						_, err := time.Parse("02/01/2006", strings.Trim(contents[j][1]))
+						_, err := time.Parse("02/01/2006", strings.TrimSpace(contents[j][1]))
 						if err != nil {
 							error_in_date = append(error_in_date, fmt.Sprintf("\nThread:%d , %v , Error in date %v, Row: %d  ", c, f, contents[j][1], j+1))
 						}
 
 					case 2:
-						ts, err := time.Parse("15:04:05", strings.Trim(contents[j][2]))
+						ts, err := time.Parse("15:04:05", strings.TrimSpace(contents[j][2]))
 						if err != nil {
 							error_in_ts = append(error_in_ts, fmt.Sprintf("\nThread:%d ,%v , Error in timescmp %v, Row: %d  ", c, f, contents[j][2], j+1))
 
