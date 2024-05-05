@@ -67,7 +67,7 @@ func CheckErr(inPath string) {
 		}
 		wg.Add(1)
 		//log.Printf("Thread added %d", c)
-		go func(filepath string) {
+		go func(filepath string, c int) {
 			//log.Println("entered go func")
 			csvReader := csv.NewReader(file)
 			contents, _ := csvReader.ReadAll()
@@ -149,7 +149,7 @@ func CheckErr(inPath string) {
 			//log.Printf("Thread closed %d", tc)
 			file.Close()
 			//log.Println("File closed")
-		}(filepath)
+		}(filepath, c)
 	}
 	wg.Wait()
 	//log.Println("waiting...")
