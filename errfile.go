@@ -41,13 +41,17 @@ func CheckErr(inPath string) {
 	error_in_SQ := []string{}
 	error_in_LTQ := []string{}
 	error_in_OI := []string{}
-	for _, filepath := range paths {
+	for c, filepath := range paths {
 		file, err := os.Open(filepath)
-		//log.Println("file opened")
+		log.Println("file num: ",c)
 		if err != nil {
 			log.Print("Cannot open file")
 			wg.Done()
 			return
+		}
+		if c%349==0{
+			log.Println("waiting")
+			wg.Wait()
 		}
 		wg.Add(1)
 		ta++
@@ -138,16 +142,17 @@ func CheckErr(inPath string) {
 	}
 	wg.Wait()
 	//log.Println("waiting...")
-	log.Printf("Errors in Date:\n %v ", error_in_date)
-	log.Printf("Errors in Timestamp:\n %v ", error_in_ts)
-	log.Printf("Errors in Timestamp Hours:\n %v ", error_in_hours)
-	log.Printf("Errors in Timestamp Mins:\n %v", error_in_mins)
-	log.Printf("Errors in LTP:\n %v", error_in_LTP)
-	log.Printf("Errors in Buy Price:\n %v", error_in_BP)
-	log.Printf("Errors in Buy Quantity:\n %v", error_in_BQ)
-	log.Printf("Errors in Sell Price:\n %v", error_in_SP)
-	log.Printf("Errors in Sell Quantity:\n %v", error_in_SQ)
-	log.Printf("Errors in LTQ:\n %v", error_in_LTQ)
-	log.Printf("Errors in Open Interest\n %v", error_in_OI)
+	
+	fmt.Printf("Errors in Date:\n %v ", error_in_date)
+	fmt.Printf("Errors in Timestamp:\n %v ", error_in_ts)
+	fmt.Printf("Errors in Timestamp Hours:\n %v ", error_in_hours)
+	fmt.Printf("Errors in Timestamp Mins:\n %v", error_in_mins)
+	fmt.Printf("Errors in LTP:\n %v", error_in_LTP)
+	fmt.Printf("Errors in Buy Price:\n %v", error_in_BP)
+	fmt.Printf("Errors in Buy Quantity:\n %v", error_in_BQ)
+	fmt.Printf("Errors in Sell Price:\n %v", error_in_SP)
+	fmt.Printf("Errors in Sell Quantity:\n %v", error_in_SQ)
+	fmt.Printf("Errors in LTQ:\n %v", error_in_LTQ)
+	fmt.Printf("Errors in Open Interest\n %v", error_in_OI)
 
 }
