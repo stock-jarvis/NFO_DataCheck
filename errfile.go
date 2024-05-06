@@ -48,6 +48,7 @@ func CheckErr(inPath string) {
 	error_in_ts := []string{}
 	error_in_hours := []string{}
 	error_in_mins := []string{}
+	error_in_secs := []string{}
 	error_in_LTP := []string{}
 	error_in_BP := []string{}
 	error_in_BQ := []string{}
@@ -89,22 +90,22 @@ func CheckErr(inPath string) {
 			csvWriter3 := csv.NewWriter(file3) //copy of replaced file
 			f := fmt.Sprint(filepath)
 			for j := 1; j < len(contents); j++ {
-				for i := 1; i < len(contents[j]); i++ {
-					original := []string{
-						fmt.Sprintf("%v", contents[j][0]),
-						fmt.Sprintf("%v", contents[j][1]),
-						fmt.Sprintf("%v", contents[j][2]),
-						fmt.Sprintf("%v", contents[j][3]),
-						fmt.Sprintf("%v", contents[j][4]),
-						fmt.Sprintf("%v", contents[j][5]),
-						fmt.Sprintf("%v", contents[j][6]),
-						fmt.Sprintf("%v", contents[j][7]),
-						fmt.Sprintf("%v", contents[j][8]),
-						fmt.Sprintf("%v", contents[j][9]),
-					}
-					csvWriter2.Write(original)
-					csvWriter2.Flush()
+				original := []string{
+					fmt.Sprintf("%v", contents[j][0]),
+					fmt.Sprintf("%v", contents[j][1]),
+					fmt.Sprintf("%v", contents[j][2]),
+					fmt.Sprintf("%v", contents[j][3]),
+					fmt.Sprintf("%v", contents[j][4]),
+					fmt.Sprintf("%v", contents[j][5]),
+					fmt.Sprintf("%v", contents[j][6]),
+					fmt.Sprintf("%v", contents[j][7]),
+					fmt.Sprintf("%v", contents[j][8]),
+					fmt.Sprintf("%v", contents[j][9]),
+				}
+				csvWriter2.Write(original)
+				csvWriter2.Flush()
 
+				for i := 1; i < len(contents[j]); i++ {
 					switch i {
 					case 1:
 						_, err := time.Parse("02/01/2006", contents[j][1])
@@ -118,7 +119,7 @@ func CheckErr(inPath string) {
 							error_in_ts = append(error_in_ts, fmt.Sprintf("\nThread:%d ,%v , Error in timestamp %v, Row: %d  ", c, f, contents[j][2], j+1))
 
 						}
-						h, m, _ := ts.Clock()
+						h, m, s := ts.Clock()
 						if h < 9 {
 							if h == 1 || h == 2 || h == 3 {
 								h += 12
@@ -132,8 +133,11 @@ func CheckErr(inPath string) {
 							error_in_mins = append(error_in_mins, fmt.Sprintf("\nThread:%d ,%v , Hour = 9, Minutes < 15 %v, Row: %d  ", c, f, contents[j][2], j+1))
 						}
 						if h == 15 && m > 30 {
-							error_in_mins = append(error_in_mins, fmt.Sprintf("\nThread:%d ,%v , Hour = 15, Minutes > 29 %v, Row: %d  ", c, f, contents[j][2], j+1))
+							error_in_mins = append(error_in_mins, fmt.Sprintf("\nThread:%d ,%v , Hour = 15, Minutes > 30 %v, Row: %d  ", c, f, contents[j][2], j+1))
 
+						}
+						if h == 15 && m == 30 && s > 0 {
+							error_in_secs = append(error_in_mins, fmt.Sprintf("\nThread:%d ,%v , Hour = 15, Minutes = 30, Secs > 0 %v, Row: %d  ", c, f, contents[j][2], j+1))
 						}
 
 						tsx := fmt.Sprint(ts)
@@ -216,6 +220,7 @@ func CheckErr(inPath string) {
 	log.Printf("\nErrors in Timestamp:\n %v ", error_in_ts)
 	log.Printf("\nErrors in Timestamp Hours:\n %v ", error_in_hours)
 	log.Printf("\nErrors in Timestamp Mins:\n %v", error_in_mins)
+	log.Printf("\nErrors in Timestamp Seconds:\n %v", error_in_secs)
 	log.Printf("\nErrors in LTP:\n %v", error_in_LTP)
 	log.Printf("\nErrors in Buy Price:\n %v", error_in_BP)
 	log.Printf("\nErrors in Buy Quantity:\n %v", error_in_BQ)
