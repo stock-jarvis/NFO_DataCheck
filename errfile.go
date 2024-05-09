@@ -76,7 +76,7 @@ func CheckErr(inPath string) {
 			contents, _ := csvReader.ReadAll()
 			// file1, _ := os.Create("op.csv")
 			// csvWriter := csv.NewWriter(file1)
-			file1, _ := os.OpenFile(inPath, os.O_WRONLY, 1)
+			file1, _ := os.OpenFile(filepath, os.O_WRONLY, 1)
 			csvWriter1 := csv.NewWriter(file1)
 			name := strings.Split(inPath, "/")
 			outpath1 := fmt.Sprintf("/%v/%v", *source2, name[len(name)-1])
